@@ -4,26 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Candle Walla</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <nav>
-      <div class="logo">Candle Walla 📊</div>
-      <input type="checkbox" id="menu-toggle">
-      <label for="menu-toggle" class="hamburger">&#9776;</label>
+    <nav class="navbar">
+      <div class="logo">Candle Walla</div>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="ai/index.html">AI Prediction</a></li>
+        <li><a href="ai.html">AI Prediction</a></li>
         <li><a href="learn/index.html">Learn</a></li>
-        <li><a href="about/index.html">About</a></li>
+        <li><a href="about.html">About</a></li>
         <li><button onclick="toggleTheme()">🌓</button></li>
+        <li><button onclick="setLang('en')">EN</button><button onclick="setLang('hi')">हि</button></li>
       </ul>
     </nav>
   </header>
-
   <main>
-    <h1>Welcome to Candle Walla</h1>
+    <h1 id="title">Candle Walla 📊</h1>
     <select id="symbolSelector" onchange="loadChart()">
       <option value="NSE:NIFTY">NIFTY</option>
       <option value="NSE:BANKNIFTY">BANKNIFTY</option>
@@ -31,13 +29,10 @@
       <option value="NSE:TCS">TCS</option>
       <option value="NSE:INFY">Infosys</option>
     </select>
-    <div id="tradingview-widget"></div>
+    <div id="tradingview_widget"></div>
   </main>
-
-  <footer>
-    <p>&copy; 2025 Candle Walla. All rights reserved.</p>
-  </footer>
-
-  <script src="assets/js/chart.js"></script>
+  <footer>© 2025 Candle Walla. All rights reserved.</footer>
+  <script src="script.js"></script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
 </body>
 </html>
