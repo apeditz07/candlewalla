@@ -3,136 +3,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Candle Walla</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Candle Walla 📊</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    body.light { background: #ffffff; color: #000000; }
-    body.dark { background: #1e1e1e; color: #ffffff; }
-    select, button {
-      margin: 10px; padding: 10px; font-size: 16px;
-    }
-    .lang-switch, .device-switch, .theme-switch {
-      margin-top: 10px;
-    }
-    #learn, footer {
-      margin-top: 30px;
-      background: #f4f4f4;
-      padding: 15px;
-      border-radius: 8px;
-    }
-    footer {
-      text-align: center;
-      font-size: 14px;
-    }
-    a.learn-link {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-  </style>
 </head>
-<body class="light">
+<body>
+  <nav class="navbar">
+    <div class="logo">Candle Walla</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#prediction">Prediction</a></li>
+      <li><a href="learn/index.html">Learn Stocks</a></li>
+      <li><a href="#about">About</a></li>
+      <li><button onclick="toggleTheme()">🌓</button></li>
+      <li>
+        <button onclick="setLang('en')">EN</button>
+        <button onclick="setLang('hi')">हिंदी</button>
+      </li>
+    </ul>
+  </nav>
 
   <h1 id="title">Candle Walla 📊</h1>
 
-  <div>
-    <select id="symbolSelector" onchange="loadChart()">
-      <option value="NSE:NIFTY">NIFTY</option>
-      <option value="NSE:BANKNIFTY">BANKNIFTY</option>
-      <option value="NSE:RELIANCE">Reliance</option>
-      <option value="NSE:TCS">TCS</option>
-      <option value="NSE:INFY">Infosys</option>
-    </select>
-  </div>
-
-  <div class="device-switch">
-    <label>View Mode:</label>
-    <select id="deviceMode" onchange="loadChart()">
-      <option value="auto">Auto</option>
-      <option value="mobile">Mobile</option>
-      <option value="desktop">Desktop</option>
-    </select>
-  </div>
-
-  <div class="theme-switch">
-    <button onclick="toggleTheme()">Toggle Theme</button>
-  </div>
+  <select id="symbolSelector" onchange="loadChart()">
+    <option value="NSE:NIFTY">NIFTY</option>
+    <option value="NSE:BANKNIFTY">BANKNIFTY</option>
+    <option value="NSE:RELIANCE">Reliance</option>
+    <option value="NSE:TCS">TCS</option>
+    <option value="NSE:INFY">Infosys</option>
+  </select>
 
   <div class="tradingview-widget-container">
-    <div id="tradingview_chart"></div>
+    <div id="tradingview_0f5a2"></div>
   </div>
 
-  <div class="lang-switch">
-    <button onclick="setLang('en')">English</button>
-    <button onclick="setLang('hi')">हिंदी</button>
-  </div>
+  <section id="prediction">
+    <h2>🔮 AI Prediction</h2>
+    <div id="ai-output">Loading...</div>
+  </section>
 
-  <div id="prediction">
-    <h2>📈 AI Prediction</h2>
-    <p id="prediction-text">Next candle might go up 🔼 +100 points</p>
-  </div>
-
-  <div id="learn">
-    <h2 id="learn-title">Learn Stocks</h2>
-    <p id="learn-text">See chart and prediction below.</p>
-    <a class="learn-link" href="learn/index.html">Go to Learn Page</a>
-  </div>
-
-  <footer>
-    <p>© 2025 Candle Walla | Made for educational use</p>
+  <footer id="about">
+    <h3>About Candle Walla</h3>
+    <p>This is a free stock analysis and charting tool powered by AI and TradingView.</p>
+    <p>Made with ❤️ in India.</p>
   </footer>
 
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script>
-    let widget;
-    function loadChart() {
-      const symbol = document.getElementById("symbolSelector").value;
-      const device = document.getElementById("deviceMode").value;
-      const width = device === "mobile" ? 360 : device === "desktop" ? 1024 : "100%";
-      const height = device === "mobile" ? 400 : 500;
-
-      if (widget) widget.remove();
-      widget = new TradingView.widget({
-        "width": width,
-        "height": height,
-        "symbol": symbol,
-        "interval": "15",
-        "timezone": "Asia/Kolkata",
-        "theme": document.body.classList.contains("dark") ? "dark" : "light",
-        "style": "1",
-        "locale": "en",
-        "toolbar_bg": "#f1f3f6",
-        "enable_publishing": false,
-        "hide_top_toolbar": false,
-        "save_image": false,
-        "container_id": "tradingview_chart"
-      });
-    }
-
-    function toggleTheme() {
-      document.body.classList.toggle("dark");
-      document.body.classList.toggle("light");
-      loadChart();
-    }
-
-    function setLang(lang) {
-      const isHindi = lang === 'hi';
-      document.getElementById("title").innerText = isHindi ? "कैंडल वाला 📊" : "Candle Walla 📊";
-      document.getElementById("learn-title").innerText = isHindi ? "स्टॉक सीखें" : "Learn Stocks";
-      document.getElementById("learn-text").innerText = isHindi ? "नीचे चार्ट और भविष्यवाणी देखें।" : "See chart and prediction below.";
-      const selector = document.getElementById("symbolSelector");
-      selector.options[0].text = isHindi ? "निफ्टी" : "NIFTY";
-      selector.options[1].text = isHindi ? "बैंक निफ्टी" : "BANKNIFTY";
-      selector.options[2].text = isHindi ? "रिलायंस" : "Reliance";
-      selector.options[3].text = isHindi ? "टीसीएस" : "TCS";
-      selector.options[4].text = isHindi ? "इन्फोसिस" : "Infosys";
-    }
-
-    window.addEventListener("DOMContentLoaded", loadChart);
-  </script>
+  <script src="https://s3.tradingview.com/tv.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
