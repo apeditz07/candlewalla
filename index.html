@@ -1,74 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8" /><title>Candle Walla</title>
-<link rel="stylesheet" href="styles.css" /></head>
+<head>
+  <meta charset="UTF-8" />
+  <title>Candle Walla</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    select, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .lang-switch {
+      margin-top: 20px;
+    }
+    #learn {
+      margin-top: 30px;
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
 <body>
-  <h1 id="title">Candle Walla</h1>
-  <!-- TradingView Widget BEGIN -->
-  <select id="symbolSelector" onchange="loadChart()">
-  <option value="NSE:NIFTY">NIFTY</option>
-  <option value="NSE:BANKNIFTY">BANKNIFTY</option>
-  <option value="NSE:RELIANCE">Reliance</option>
-  <option value="NSE:TCS">TCS</option>
-  <option value="NSE:INFY">Infosys</option>
-</select>
-<div class="tradingview-widget-container">
-  <div id="tradingview_0f5a2"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script type="text/javascript">
-  let widget;
 
-  function loadChart() {
-    const symbol = document.getElementById("symbolSelector").value;
+  <h1 id="title">Candle Walla 📊</h1>
 
-    if (widget) widget.remove();
+  <div>
+    <select id="symbolSelector" onchange="loadChart()">
+      <option value="NSE:NIFTY">NIFTY</option>
+      <option value="NSE:BANKNIFTY">BANKNIFTY</option>
+      <option value="NSE:RELIANCE">Reliance</option>
+      <option value="NSE:TCS">TCS</option>
+      <option value="NSE:INFY">Infosys</option>
+    </select>
+  </div>
 
-    widget = new TradingView.widget({
-      "width": "100%",
-      "height": 500,
-      "symbol": symbol,
-      "interval": "15",
-      "timezone": "Asia/Kolkata",
-      "theme": "light",
-      "style": "1",
-      "locale": "en",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "save_image": false,
-      "container_id": "tradingview_0f5a2"
-    });
-  }
+  <div class="tradingview-widget-container">
+    <div id="tradingview_0f5a2"></div>
+  </div>
 
-  window.addEventListener('DOMContentLoaded', loadChart);
-</script>
-      "width": "100%",
-      "height": 500,
-      "symbol": "NSE:NIFTY",
-      "interval": "15",
-      "timezone": "Asia/Kolkata",
-      "theme": "light",
-      "style": "1",
-      "locale": "en",
-      "toolbar_bg": "#f1f3f6",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "save_image": false,
-      "container_id": "tradingview_0f5a2"
-    });
-  </script>
-</div>
-<!-- TradingView Widget END -->
   <div class="lang-switch">
     <button onclick="setLang('en')">English</button>
     <button onclick="setLang('hi')">हिंदी</button>
   </div>
-  <div id="chart"></div>
-  <div id="prediction">Loading prediction...</div>
+
   <div id="learn">
     <h2 id="learn-title">Learn Stocks</h2>
-    <p id="learn-text">नीचे चार्ट और भविष्यवाणी देखें।</p>
+    <p id="learn-text">See chart and prediction below.</p>
   </div>
-  <script src="script.js"></script>
+
+  <!-- TradingView Script -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+    let widget;
+
+    function loadChart() {
+      const symbol = document.getElementById("symbolSelector").value;
+
+      if (widget) widget.remove();
+
+      widget = new TradingView.widget({
+        "width": "100%",
+        "height": 500,
+        "symbol": symbol,
+        "interval": "15",
+        "timezone": "Asia/Kolkata",
+        "theme": "light",
+        "style": "1",
+        "locale": "en",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "hide_top_toolbar": false,
+        "save_image": false,
+        "container_id": "tradingview_0f5a2"
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadChart);
+
+    function setLang(lang) {
+      const isHindi = lang === 'hi';
+
+      document.getElementById("title").innerText = isHindi ? "कैंडल वाला 📊" : "Candle Walla 📊";
+      document.getElementById("learn-title").innerText = isHindi ? "स्टॉक सीखें" : "Learn Stocks";
+      document.getElementById("learn-text").innerText = isHindi
+        ? "नीचे चार्ट और भविष्यवाणी देखें।"
+        : "See chart and prediction below.";
+
+      const selector = document.getElementById("symbolSelector");
+      selector.options[0].text = isHindi ? "निफ्टी" : "NIFTY";
+      selector.options[1].text = isHindi ? "बैंक निफ्टी" : "BANKNIFTY";
+      selector.options[2].text = isHindi ? "रिलायंस" : "Reliance";
+      selector.options[3].text = isHindi ? "टीसीएस" : "TCS";
+      selector.options[4].text = isHindi ? "इन्फोसिस" : "Infosys";
+    }
+  </script>
 </body>
 </html>
