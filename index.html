@@ -2,21 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Candle Walla</title>
+  <title>Candle Walla 📊</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       font-family: sans-serif;
       padding: 20px;
       text-align: center;
+      background-color: #ffffff;
+      color: #000000;
+      transition: background 0.3s, color 0.3s;
     }
     select, button {
       margin: 10px;
       padding: 10px;
       font-size: 16px;
     }
-    .lang-switch {
+    .lang-switch, .mode-switch, .footer {
       margin-top: 20px;
+    }
+    #prediction {
+      font-size: 18px;
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #eef;
+      display: inline-block;
     }
     #learn {
       margin-top: 30px;
@@ -24,12 +35,38 @@
       padding: 15px;
       border-radius: 8px;
     }
+    .dark-mode {
+      background-color: #1e1e1e;
+      color: #ffffff;
+    }
+    .dark-mode #prediction {
+      background-color: #333;
+    }
+    .footer {
+      font-size: 14px;
+      color: gray;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
 
   <h1 id="title">Candle Walla 📊</h1>
 
+  <!-- Device View Mode -->
+  <div class="mode-switch">
+    <label>View Mode:</label>
+    <select id="deviceMode" onchange="loadChart()">
+      <option value="auto">Auto</option>
+      <option value="mobile">Mobile</option>
+      <option value="desktop">Desktop</option>
+    </select>
+
+    <!-- Theme Toggle -->
+    <button onclick="toggleTheme()">🌞/🌙</button>
+  </div>
+
+  <!-- Stock Selector -->
   <div>
     <select id="symbolSelector" onchange="loadChart()">
       <option value="NSE:NIFTY">NIFTY</option>
@@ -38,42 +75,48 @@
       <option value="NSE:TCS">TCS</option>
       <option value="NSE:INFY">Infosys</option>
     </select>
-
-    <select id="deviceMode" onchange="loadChart()">
-      <option value="auto">Auto</option>
-      <option value="mobile">Mobile</option>
-      <option value="desktop">Desktop</option>
-    </select>
   </div>
 
+  <!-- Chart Display -->
   <div class="tradingview-widget-container">
     <div id="tradingview_0f5a2"></div>
   </div>
 
+  <!-- Language Switch -->
   <div class="lang-switch">
     <button onclick="setLang('en')">English</button>
     <button onclick="setLang('hi')">हिंदी</button>
   </div>
 
+  <!-- Prediction Section -->
+  <div id="prediction">Click stock to get AI prediction...</div>
+
+  <!-- Learn Stocks Link -->
   <div id="learn">
-    <h2 id="learn-title">Learn Stocks</h2>
-    <p id="learn-text">See chart and prediction below.</p>
+    <h2 id="learn-title">📚 Learn Stocks</h2>
+    <p id="learn-text">👉 <a href="learn.html" target="_blank">Click here to start learning with videos</a></p>
   </div>
 
-  <!-- TradingView Script -->
+  <!-- Footer -->
+  <div class="footer">
+    Made by Candle Walla Team © 2025 | <a href="about.html" target="_blank">About</a>
+  </div>
+
+  <!-- Scripts -->
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
+  <script>
     let widget;
+    let isDark = false;
 
     function loadChart() {
       const symbol = document.getElementById("symbolSelector").value;
       const mode = document.getElementById("deviceMode").value;
 
-      if (widget) widget.remove();
-
       let height = 500;
       if (mode === 'mobile') height = 350;
-      if (mode === 'desktop') height = 600;
+      else if (mode === 'desktop') height = 600;
+
+      if (widget) widget.remove();
 
       widget = new TradingView.widget({
         "width": "100%",
@@ -81,7 +124,7 @@
         "symbol": symbol,
         "interval": "15",
         "timezone": "Asia/Kolkata",
-        "theme": "light",
+        "theme": isDark ? "dark" : "light",
         "style": "1",
         "locale": "en",
         "toolbar_bg": "#f1f3f6",
@@ -90,26 +133,39 @@
         "save_image": false,
         "container_id": "tradingview_0f5a2"
       });
-    }
 
-    window.addEventListener('DOMContentLoaded', loadChart);
+      predictNextCandle(symbol);
+    }
 
     function setLang(lang) {
       const isHindi = lang === 'hi';
-
       document.getElementById("title").innerText = isHindi ? "कैंडल वाला 📊" : "Candle Walla 📊";
-      document.getElementById("learn-title").innerText = isHindi ? "स्टॉक सीखें" : "Learn Stocks";
-      document.getElementById("learn-text").innerText = isHindi
-        ? "नीचे चार्ट और भविष्यवाणी देखें।"
-        : "See chart and prediction below.";
-
-      const selector = document.getElementById("symbolSelector");
-      selector.options[0].text = isHindi ? "निफ्टी" : "NIFTY";
-      selector.options[1].text = isHindi ? "बैंक निफ्टी" : "BANKNIFTY";
-      selector.options[2].text = isHindi ? "रिलायंस" : "Reliance";
-      selector.options[3].text = isHindi ? "टीसीएस" : "TCS";
-      selector.options[4].text = isHindi ? "इन्फोसिस" : "Infosys";
+      document.getElementById("learn-title").innerText = isHindi ? "स्टॉक सीखें" : "📚 Learn Stocks";
+      document.getElementById("learn-text").innerHTML = isHindi 
+        ? '👉 <a href="learn.html" target="_blank">शेयर बाजार वीडियो सीखें</a>' 
+        : '👉 <a href="learn.html" target="_blank">Click here to start learning with videos</a>';
     }
+
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.classList.toggle("dark-mode");
+      loadChart();
+    }
+
+    function predictNextCandle(symbol) {
+      // Fake AI for now
+      const predictions = {
+        "NSE:NIFTY": "🔼 Bullish - Strong Buying",
+        "NSE:BANKNIFTY": "🔽 Bearish - Wait & Watch",
+        "NSE:RELIANCE": "🔼 Bullish - Positive News",
+        "NSE:TCS": "🔽 Bearish - IT Weak",
+        "NSE:INFY": "🔼 Bullish - Technical Breakout"
+      };
+      const result = predictions[symbol] || "📉 Neutral";
+      document.getElementById("prediction").innerText = `AI Prediction: ${result}`;
+    }
+
+    window.addEventListener('DOMContentLoaded', loadChart);
   </script>
 </body>
 </html>
