@@ -5,6 +5,13 @@
 <body>
   <h1 id="title">Candle Walla</h1>
   <!-- TradingView Widget BEGIN -->
+  <select id="symbolSelector" onchange="loadChart()">
+  <option value="NSE:NIFTY">NIFTY</option>
+  <option value="NSE:BANKNIFTY">BANKNIFTY</option>
+  <option value="NSE:RELIANCE">Reliance</option>
+  <option value="NSE:TCS">TCS</option>
+  <option value="NSE:INFY">Infosys</option>
+</select>
 <div class="tradingview-widget-container">
   <div id="tradingview_0f5a2"></div>
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
