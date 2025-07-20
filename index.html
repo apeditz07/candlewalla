@@ -24,11 +24,6 @@
       padding: 15px;
       border-radius: 8px;
     }
-    #prediction {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 18px;
-    }
   </style>
 </head>
 <body>
@@ -43,42 +38,46 @@
       <option value="NSE:TCS">TCS</option>
       <option value="NSE:INFY">Infosys</option>
     </select>
+
+    <select id="deviceMode" onchange="loadChart()">
+      <option value="auto">Auto</option>
+      <option value="mobile">Mobile</option>
+      <option value="desktop">Desktop</option>
+    </select>
   </div>
 
   <div class="tradingview-widget-container">
     <div id="tradingview_0f5a2"></div>
   </div>
 
-  <!-- 🔮 Prediction Feature -->
-  <div>
-    <button onclick="predictCandle()">🔮 Predict Next Candle</button>
-    <div id="prediction">Click the button for a prediction!</div>
-  </div>
-
-  <!-- 🌐 Language Switch -->
   <div class="lang-switch">
     <button onclick="setLang('en')">English</button>
     <button onclick="setLang('hi')">हिंदी</button>
   </div>
 
-  <!-- 📘 Learn Section -->
   <div id="learn">
     <h2 id="learn-title">Learn Stocks</h2>
     <p id="learn-text">See chart and prediction below.</p>
   </div>
 
-  <!-- 📈 TradingView Script -->
+  <!-- TradingView Script -->
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   <script type="text/javascript">
     let widget;
 
     function loadChart() {
       const symbol = document.getElementById("symbolSelector").value;
+      const mode = document.getElementById("deviceMode").value;
+
       if (widget) widget.remove();
+
+      let height = 500;
+      if (mode === 'mobile') height = 350;
+      if (mode === 'desktop') height = 600;
 
       widget = new TradingView.widget({
         "width": "100%",
-        "height": 500,
+        "height": height,
         "symbol": symbol,
         "interval": "15",
         "timezone": "Asia/Kolkata",
@@ -110,18 +109,6 @@
       selector.options[2].text = isHindi ? "रिलायंस" : "Reliance";
       selector.options[3].text = isHindi ? "टीसीएस" : "TCS";
       selector.options[4].text = isHindi ? "इन्फोसिस" : "Infosys";
-
-      predictCandle(); // Refresh prediction text on language change
-    }
-
-    function predictCandle() {
-      const prediction = Math.random() > 0.5 ? "UP 🔼" : "DOWN 🔽";
-      const isHindi = document.getElementById("title").innerText.includes("कैंडल");
-      const message = isHindi
-        ? `अगली कैंडल शायद ${prediction === "UP 🔼" ? "ऊपर 🔼" : "नीचे 🔽"} जा सकती है।`
-        : `Next candle may go ${prediction}`;
-
-      document.getElementById("prediction").innerText = message;
     }
   </script>
 </body>
