@@ -1,54 +1,43 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Candle Walla 📊</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Candle Walla</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-  <nav class="navbar">
-    <div class="logo">Candle Walla</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#prediction">Prediction</a></li>
-      <li><a href="learn/index.html">Learn Stocks</a></li>
-      <li><a href="#about">About</a></li>
-      <li><button onclick="toggleTheme()">🌓</button></li>
-      <li>
-        <button onclick="setLang('en')">EN</button>
-        <button onclick="setLang('hi')">हिंदी</button>
-      </li>
-    </ul>
-  </nav>
+  <header>
+    <nav>
+      <div class="logo">Candle Walla 📊</div>
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="hamburger">&#9776;</label>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="ai/index.html">AI Prediction</a></li>
+        <li><a href="learn/index.html">Learn</a></li>
+        <li><a href="about/index.html">About</a></li>
+        <li><button onclick="toggleTheme()">🌓</button></li>
+      </ul>
+    </nav>
+  </header>
 
-  <h1 id="title">Candle Walla 📊</h1>
+  <main>
+    <h1>Welcome to Candle Walla</h1>
+    <select id="symbolSelector" onchange="loadChart()">
+      <option value="NSE:NIFTY">NIFTY</option>
+      <option value="NSE:BANKNIFTY">BANKNIFTY</option>
+      <option value="NSE:RELIANCE">Reliance</option>
+      <option value="NSE:TCS">TCS</option>
+      <option value="NSE:INFY">Infosys</option>
+    </select>
+    <div id="tradingview-widget"></div>
+  </main>
 
-  <select id="symbolSelector" onchange="loadChart()">
-    <option value="NSE:NIFTY">NIFTY</option>
-    <option value="NSE:BANKNIFTY">BANKNIFTY</option>
-    <option value="NSE:RELIANCE">Reliance</option>
-    <option value="NSE:TCS">TCS</option>
-    <option value="NSE:INFY">Infosys</option>
-  </select>
-
-  <div class="tradingview-widget-container">
-    <div id="tradingview_0f5a2"></div>
-  </div>
-
-  <section id="prediction">
-    <h2>🔮 AI Prediction</h2>
-    <div id="ai-output">Loading...</div>
-  </section>
-
-  <footer id="about">
-    <h3>About Candle Walla</h3>
-    <p>This is a free stock analysis and charting tool powered by AI and TradingView.</p>
-    <p>Made with ❤️ in India.</p>
+  <footer>
+    <p>&copy; 2025 Candle Walla. All rights reserved.</p>
   </footer>
 
-  <script src="https://s3.tradingview.com/tv.js"></script>
-  <script src="script.js"></script>
+  <script src="assets/js/chart.js"></script>
 </body>
 </html>
