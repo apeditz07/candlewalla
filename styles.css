@@ -1,0 +1,50 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+}
+body.dark {
+  --bg: #111111;
+  --text: #ffffff;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+.nav-links li {
+  display: inline;
+}
+.nav-links a, .nav-links button {
+  color: white;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+select {
+  padding: 8px;
+  font-size: 16px;
+  margin: 20px;
+}
+footer {
+  background-color: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+  margin-top: 30px;
+}
